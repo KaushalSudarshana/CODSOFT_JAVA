@@ -1,0 +1,152 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+// Class representing a single transaction
+class Transaction {
+    private String type;
+    private double amount;
+
+    public Transaction(String type, double amount) {
+        this.type = type;
+        this.amount = amount;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+}
+
+// Class representing the user's bank account
+class BankAccount {
+    private double balance;
+    private int accountno;
+    private ArrayList<Transaction> transactionHistory;
+
+    // Constructor to initialize the balance and transaction history
+    public BankAccount(double balance, int accountno) {
+        this.balance = balance;
+        this.accountno = accountno;
+        this.transactionHistory = new ArrayList<>();
+    }
+
+    // Method to withdraw money from the account
+    public boolean withdraw(double amount) {
+        if (amount > balance) {
+            System.out.println("Insufficient balance.");
+            return false;
+        }
+        balance -= amount;
+        transactionHistory.add(new Transaction("Withdrawal", amount));
+        System.out.println("Withdrawal successful. Remaining balance: " + balance);
+        return true;
+    }
+
+    // Method to deposit money into the account
+    public void deposit(double amount) {
+        balance += amount;
+        transactionHistory.add(new Transaction("Deposit", amount));
+        System.out.println("Deposit successful. New balance: " + balance);
+    }
+
+    // Method to check the account balance
+    public double checkBalance() {
+        return balance;
+    }
+
+    // Method to display account details including transaction history
+    public void displayAccountDetails() {
+        System.out.println("Account Number: " + accountno);
+        System.out.println("Account Balance: " + balance);
+        System.out.println("Transaction History:");
+        for (Transaction transaction : transactionHistory) {
+            System.out.println(transaction.getType() + ": " + transaction.getAmount());
+        }
+        System.out.println("Account Name : Kaushal Sudarshana");
+        System.out.println("Account Address : 205 wijayawimalarathna Rd mahabuthgamuwa angoda" );
+        System.out.println("Account Phone Number : 07451351651");
+    }
+}
+
+// Class representing the ATM machine
+public class ATM {
+    private BankAccount account;
+
+    // Constructor to connect the ATM with the user's bank account
+    public ATM(BankAccount account) {
+        this.account = account;
+    }
+
+    // Method to display the ATM interface
+    public void displayMenu() {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+        double amount;
+
+        System.out.print("Enter Account Number: ");
+        int accountno = scanner.nextInt();
+
+        if (accountno == 5555) {
+            do {
+                System.out.println("\nATM Menu:");
+                System.out.println("1. Withdraw");
+                System.out.println("2. Deposit");
+                System.out.println("3. Check Balance");
+                System.out.println("4. Display Account Details");
+                System.out.println("5. Exit");
+                System.out.print("Enter your choice: ");
+                choice = scanner.nextInt();
+
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter amount to withdraw: ");
+                        amount = scanner.nextDouble();
+                        if (amount > 0) {
+                            account.withdraw(amount);
+                        } else {
+                            System.out.println("Invalid amount.");
+                        }
+                        break;
+                    case 2:
+                        System.out.print("Enter amount to deposit: ");
+                        amount = scanner.nextDouble();
+                        if (amount > 0) {
+                            account.deposit(amount);
+                        } else {
+                            System.out.println("Invalid amount.");
+                        }
+                        break;
+                    case 3:
+                        System.out.println("Your account balance: " + account.checkBalance());
+                        break;
+                    case 4:
+                        account.displayAccountDetails();
+                        break;
+                    case 5:
+                        System.out.println("Thank you for using the ATM. Goodbye!");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                }
+            } while (choice != 5);
+        } else {
+            System.out.println("Invalid Account Number.");
+        }
+
+        scanner.close();
+    }
+
+    public static void main(String[] args) {
+        // Create a bank account with an initial balance of 1000 and account number 5555
+        BankAccount userAccount = new BankAccount(1000, 5555);
+        
+        // Create an ATM object and connect it with the user's bank account
+        ATM atm = new ATM(userAccount);
+        
+        // Display the ATM interface
+        atm.displayMenu();
+    }
+}

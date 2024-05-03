@@ -1,0 +1,62 @@
+import java.util.Scanner;
+
+public class QuizApplication {
+    private static final int NUM_QUESTIONS = 5; // Number of questions
+    private static final int TIME_PER_QUESTION_SECONDS = 20; // Time per question in seconds
+    private static final String[] QUESTIONS = {
+        "What is the national food in Sri Lanka?",
+        "What is the national language in Sri Lanka?",
+        "Who is the president of Sri Lanka?",
+        "What is the national game in Sri Lanka?",
+        "What is the nearest country to Sri Lanka?"
+    };
+    private static final String[][] OPTIONS = {
+        {"A. Jam", "B. Rice", "C. Noodles", "D. Milk rice", "E. Mango"},
+        {"A. Hindi", "B. English", "C. Sinhala", "D. Spanish", "E. Finnish"},
+        {"A. Obama", "B. Ranil Wickramasinghe", "C. Mahinda Rajapaksha", "D. Mangala Samaraweera", "E. Sirisena"},
+        {"A. Netball", "B. Volleyball", "C. Football", "D. Cricket", "E. Rugby"},
+        {"A. England", "B. Canada", "C. India", "D. Singapore", "E. Africa"}
+    };
+    private static final char[] CORRECT_ANSWERS = {'B', 'C', 'C', 'B', 'C'};
+    
+    private static int score = 0;
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Welcome to the Quiz! Start Now");
+        System.out.print("What is Your Name: ");
+        String playerName = scanner.nextLine(); // Retrieve player's name
+        
+        System.out.println("Your Name: " + playerName);
+        for (int i = 0; i < NUM_QUESTIONS; i++) {
+            System.out.println("Question " + (i + 1) + ":");
+            System.out.println(QUESTIONS[i]);
+            for (String option : OPTIONS[i]) {
+                System.out.println(option);
+            }
+            
+            System.out.print("Enter your answer (A, B, C, D, or E): ");
+            long startTime = System.currentTimeMillis();
+            String answer = scanner.next().toUpperCase();
+            long endTime = System.currentTimeMillis();
+            long elapsedTime = (endTime - startTime) / 1000; 
+            
+            if (answer.charAt(0) == CORRECT_ANSWERS[i] && elapsedTime <= TIME_PER_QUESTION_SECONDS) {
+                score++;
+                System.out.println("Correct Answer!");
+            } else {
+                System.out.println("Incorrect Answer!");
+            }
+            
+            System.out.println("Time taken: " + elapsedTime + " seconds");
+            System.out.println("-------------------------");
+        }
+        
+        System.out.println("Quiz complete!");
+        System.out.println("Your Name: " + playerName);
+        System.out.println("Your final score is: " + score + "/" + NUM_QUESTIONS);
+        System.out.println("End");
+        scanner.close();
+    }
+}
